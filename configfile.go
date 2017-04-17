@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"path/filepath"
 	"strconv"
+	"strings"
 )
 
 // Reader is the config reader
@@ -64,4 +65,23 @@ func (r *Reader) IntDefault(name string, def int) int {
 // Int reads int from config file
 func (r *Reader) Int(name string) int {
 	return r.IntDefault(name, 0)
+}
+
+// BoolDefault reads bool from config file with default value,
+// result is true if lower case data is "1" or "true", otherwise false
+func (r *Reader) BoolDefault(name string, def bool) bool {
+	b, err := r.read(name)
+	if err != nil {
+		return def
+	}
+	s := strings.ToLower(string(b))
+	if s == "1" || s == "true" {
+		return true
+	}
+	return false
+}
+
+// Bool reads bool from config file, see BoolDefault
+func (r *Reader) Bool(name string) bool {
+	return r.BoolDefault(name, false)
 }
