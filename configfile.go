@@ -68,17 +68,20 @@ func (r *Reader) Int(name string) int {
 }
 
 // BoolDefault reads bool from config file with default value,
-// result is true if lower case data is "1" or "true", otherwise false
+// result is false if lower case data is "", "0", or "false", otherwise true
 func (r *Reader) BoolDefault(name string, def bool) bool {
 	b, err := r.read(name)
 	if err != nil {
 		return def
 	}
-	s := strings.ToLower(string(b))
-	if s == "1" || s == "true" {
-		return true
+	s := string(b)
+	if len(s) == 0 || s == "0" {
+		return false
 	}
-	return false
+	if strings.ToLower(s) == "false" {
+		return false
+	}
+	return true
 }
 
 // Bool reads bool from config file, see BoolDefault
