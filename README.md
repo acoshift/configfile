@@ -1,4 +1,9 @@
 # configfile
+
+[![Go Report Card](https://goreportcard.com/badge/github.com/acoshift/configfile)](https://goreportcard.com/report/github.com/acoshift/configfile)
+[![GoDoc](https://godoc.org/github.com/acoshift/configfile?status.svg)](https://godoc.org/github.com/acoshift/configfile)
+
+
 Read config from file, useful when read data from kubernetes configmaps, and secret.
 
 ## Example
