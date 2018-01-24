@@ -71,7 +71,7 @@ func (r *Reader) BytesDefault(name string, def []byte) []byte {
 
 // Bytes reads bytes from config file
 func (r *Reader) Bytes(name string) []byte {
-	return r.BytesDefault(name, nil)
+	return r.BytesDefault(name, []byte{})
 }
 
 // MustBytes reads bytes from config file, panic if file not exists
