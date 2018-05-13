@@ -56,3 +56,25 @@ func main() {
 	http.ListenAndServe(addr, nil)
 }
 ```
+
+## Example YAML
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+
+	"github.com/acoshift/configfile"
+)
+
+var config = configfile.NewReader("testdata/config.yaml")
+// or use NewYAMLReader
+var config = configfile.NewYAMLReader("testdata/config.yaml")
+
+log.Println(config.Bool("data1")) // true
+log.Println(config.String("data2")) // false
+log.Println(config.Int("data3")) // 9
+log.Println(config.Int("data4")) // 0
+log.Println(config.String("empty")) // ""
+```
