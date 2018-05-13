@@ -5,6 +5,11 @@ import (
 	"path/filepath"
 )
 
+// NewDir creates new dir reader
+func NewDir(dir string) *Dir {
+	return &Dir{dir}
+}
+
 // Dir reads config from directory
 type Dir struct {
 	Base string
