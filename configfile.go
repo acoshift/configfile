@@ -2,28 +2,28 @@ package configfile
 
 import (
 	"io"
-	"io/ioutil"
-	"path/filepath"
 	"strconv"
 	"strings"
-)
 
-// Reader is the config reader
-type Reader struct {
-	base string
-}
+	"github.com/acoshift/configfile/internal/reader"
+)
 
 // NewReader creates new config reader with custom base path
 func NewReader(base string) *Reader {
-	return &Reader{base: base}
+	return &Reader{&reader.Dir{Base: base}}
 }
 
-func (r *Reader) read(name string) ([]byte, error) {
-	return ioutil.ReadFile(filepath.Join(r.base, name))
+type intlReader interface {
+	Read(name string) ([]byte, error)
+}
+
+// Reader is the config reader
+type Reader struct {
+	r intlReader
 }
 
 func (r *Reader) readString(name string) (string, error) {
-	b, err := r.read(name)
+	b, err := r.r.Read(name)
 	if err != nil {
 		return "", err
 	}
@@ -31,7 +31,7 @@ func (r *Reader) readString(name string) (string, error) {
 }
 
 func (r *Reader) readInt(name string) (int, error) {
-	b, err := r.read(name)
+	b, err := r.r.Read(name)
 	if err != nil {
 		return 0, err
 	}
@@ -43,7 +43,7 @@ func (r *Reader) readInt(name string) (int, error) {
 }
 
 func (r *Reader) readBool(name string) (bool, error) {
-	b, err := r.read(name)
+	b, err := r.r.Read(name)
 	if err != nil {
 		return false, err
 	}
@@ -62,7 +62,7 @@ func (r *Reader) readBool(name string) (bool, error) {
 
 // BytesDefault reads bytes from config file with default value
 func (r *Reader) BytesDefault(name string, def []byte) []byte {
-	b, err := r.read(name)
+	b, err := r.r.Read(name)
 	if err != nil {
 		return def
 	}
@@ -76,7 +76,7 @@ func (r *Reader) Bytes(name string) []byte {
 
 // MustBytes reads bytes from config file, panic if file not exists
 func (r *Reader) MustBytes(name string) []byte {
-	s, err := r.read(name)
+	s, err := r.r.Read(name)
 	if err != nil {
 		panic(err)
 	}
