@@ -14,67 +14,70 @@ Read config from file, useful when read data from kubernetes configmaps, and sec
 package main
 
 import (
-	"fmt"
-	"net/http"
+    "fmt"
+    "net/http"
 
-	"github.com/acoshift/configfile"
-	"github.com/garyburd/redigo/redis"
+    "github.com/acoshift/configfile"
+    "github.com/garyburd/redigo/redis"
 )
 
 var config = configfile.NewReader("config")
 
 var (
-	addr      = config.StringDefault("addr", ":8080")
-	redisAddr = config.MustString("redis_addr")
-	redisPass = config.String("redis_pass")
-	redisDB   = config.Int("redis_db")
+    addr      = config.StringDefault("addr", ":8080")
+    redisAddr = config.MustString("redis_addr")
+    redisPass = config.String("redis_pass")
+    redisDB   = config.Int("redis_db")
 )
 
 func main() {
-	pool := redis.Pool{
-		Dial: func() (redis.Conn, error) {
-			return redis.Dial(
-				"tcp",
-				redisAddr,
-				redis.DialPassword(redisPass),
-				redis.DialDatabase(redisDB),
-			)
-		},
-	}
+    pool := redis.Pool{
+        Dial: func() (redis.Conn, error) {
+            return redis.Dial(
+                "tcp",
+                redisAddr,
+                redis.DialPassword(redisPass),
+                redis.DialDatabase(redisDB),
+            )
+        },
+    }
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		c := pool.Get()
-		defer c.Close()
-		cnt, err := redis.Int64(c.Do("INCR", "cnt"))
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		fmt.Fprintf(w, "count: %d", cnt)
-	})
+    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+        c := pool.Get()
+        defer c.Close()
+        cnt, err := redis.Int64(c.Do("INCR", "cnt"))
+        if err != nil {
+            http.Error(w, err.Error(), http.StatusInternalServerError)
+            return
+        }
+        fmt.Fprintf(w, "count: %d", cnt)
+    })
 
-	http.ListenAndServe(addr, nil)
+    http.ListenAndServe(addr, nil)
 }
 ```
 
 ## Example YAML
+
 ```go
 package main
 
 import (
-	"fmt"
-	"net/http"
+    "fmt"
+    "net/http"
 
-	"github.com/acoshift/configfile"
+    "github.com/acoshift/configfile"
 )
 
-var config = configfile.NewReader("testdata/config.yaml")
-// or use NewYAMLReader
-var config = configfile.NewYAMLReader("testdata/config.yaml")
+func main() {
+    var config = configfile.NewReader("testdata/config.yaml")
+    // or use NewYAMLReader
+    var config = configfile.NewYAMLReader("testdata/config.yaml")
 
-log.Println(config.Bool("data1")) // true
-log.Println(config.String("data2")) // false
-log.Println(config.Int("data3")) // 9
-log.Println(config.Int("data4")) // 0
-log.Println(config.String("empty")) // ""
+    log.Println(config.Bool("data1")) // true
+    log.Println(config.String("data2")) // false
+    log.Println(config.Int("data3")) // 9
+    log.Println(config.Int("data4")) // 0
+    log.Println(config.String("empty")) // ""
+}
 ```
