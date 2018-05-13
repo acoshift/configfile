@@ -7,9 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestConfigfile(t *testing.T) {
-	c := configfile.NewReader("testdata")
-
+func testReader(t *testing.T, c *configfile.Reader) {
 	t.Run("NotFound", func(t *testing.T) {
 		t.Parallel()
 
@@ -255,4 +253,18 @@ func TestConfigfile(t *testing.T) {
 			assert.NotPanics(t, func() { c.MustBytes("data4") })
 		})
 	})
+}
+
+func TestDirReader(t *testing.T) {
+	t.Parallel()
+
+	testReader(t, configfile.NewDirReader("testdata"))
+	testReader(t, configfile.NewReader("testdata"))
+}
+
+func TestYAMLReader(t *testing.T) {
+	t.Parallel()
+
+	testReader(t, configfile.NewYAMLReader("testdata/config.yaml"))
+	testReader(t, configfile.NewReader("testdata/config.yaml"))
 }

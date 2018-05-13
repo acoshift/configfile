@@ -2,15 +2,30 @@ package configfile
 
 import (
 	"io"
+	"os"
 	"strconv"
 	"strings"
 
 	"github.com/acoshift/configfile/internal/reader"
 )
 
-// NewReader creates new config reader with custom base path
+// NewReader creates new config reader
 func NewReader(base string) *Reader {
-	return &Reader{&reader.Dir{Base: base}}
+	stats, _ := os.Stat(base)
+	if stats != nil && !stats.IsDir() {
+		return &Reader{reader.NewYAML(base)}
+	}
+	return &Reader{reader.NewDir(base)}
+}
+
+// NewDirReader creates new config dir reader
+func NewDirReader(base string) *Reader {
+	return &Reader{reader.NewDir(base)}
+}
+
+// NewYAMLReader creates new yaml reader
+func NewYAMLReader(filename string) *Reader {
+	return &Reader{reader.NewYAML(filename)}
 }
 
 type intlReader interface {
