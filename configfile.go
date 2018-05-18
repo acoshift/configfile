@@ -57,6 +57,18 @@ func (r *Reader) readInt(name string) (int, error) {
 	return i, nil
 }
 
+func (r *Reader) readInt64(name string) (int64, error) {
+	b, err := r.r.Read(name)
+	if err != nil {
+		return 0, err
+	}
+	i, err := strconv.ParseInt(string(b), 10, 64)
+	if err != nil {
+		return 0, err
+	}
+	return i, nil
+}
+
 func (r *Reader) readBool(name string) (bool, error) {
 	b, err := r.r.Read(name)
 	if err != nil {
@@ -138,6 +150,29 @@ func (r *Reader) Int(name string) int {
 // MustInt reads int from config file, panic if file not exists or data can not parse to int
 func (r *Reader) MustInt(name string) int {
 	i, err := r.readInt(name)
+	if err != nil {
+		panic(err)
+	}
+	return i
+}
+
+// Int64Default reads int64 from config file with default value
+func (r *Reader) Int64Default(name string, def int64) int64 {
+	i, err := r.readInt64(name)
+	if err != nil {
+		return def
+	}
+	return i
+}
+
+// Int64 reads int from config file
+func (r *Reader) Int64(name string) int64 {
+	return r.Int64Default(name, 0)
+}
+
+// MustInt64 reads int64 from config file, panic if file not exists or data can not parse to int64
+func (r *Reader) MustInt64(name string) int64 {
+	i, err := r.readInt64(name)
 	if err != nil {
 		panic(err)
 	}

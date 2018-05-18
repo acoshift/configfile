@@ -29,6 +29,15 @@ func testReader(t *testing.T, c *configfile.Reader) {
 			assert.Panics(t, func() { c.MustInt("notfound") })
 		})
 
+		t.Run("Int64", func(t *testing.T) {
+			t.Parallel()
+
+			assert.Equal(t, int64(0), c.Int64("notfound"))
+			assert.Equal(t, int64(0), c.Int64Default("notfound", 0))
+			assert.Equal(t, int64(1), c.Int64Default("notfound", 1))
+			assert.Panics(t, func() { c.MustInt64("notfound") })
+		})
+
 		t.Run("String", func(t *testing.T) {
 			t.Parallel()
 
@@ -68,6 +77,15 @@ func testReader(t *testing.T, c *configfile.Reader) {
 			assert.Equal(t, 0, c.IntDefault("empty", 0))
 			assert.Equal(t, 1, c.IntDefault("empty", 1))
 			assert.Panics(t, func() { c.MustInt("empty") })
+		})
+
+		t.Run("Int64", func(t *testing.T) {
+			t.Parallel()
+
+			assert.Equal(t, int64(0), c.Int64("empty"))
+			assert.Equal(t, int64(0), c.Int64Default("empty", 0))
+			assert.Equal(t, int64(1), c.Int64Default("empty", 1))
+			assert.Panics(t, func() { c.MustInt64("empty") })
 		})
 
 		t.Run("String", func(t *testing.T) {
@@ -111,6 +129,15 @@ func testReader(t *testing.T, c *configfile.Reader) {
 			assert.Panics(t, func() { c.MustInt("data1") })
 		})
 
+		t.Run("Int64", func(t *testing.T) {
+			t.Parallel()
+
+			assert.Equal(t, int64(0), c.Int64("data1"))
+			assert.Equal(t, int64(0), c.Int64Default("data1", 0))
+			assert.Equal(t, int64(1), c.Int64Default("data1", 1))
+			assert.Panics(t, func() { c.MustInt64("data1") })
+		})
+
 		t.Run("String", func(t *testing.T) {
 			t.Parallel()
 
@@ -150,6 +177,15 @@ func testReader(t *testing.T, c *configfile.Reader) {
 			assert.Equal(t, 0, c.IntDefault("data2", 0))
 			assert.Equal(t, 1, c.IntDefault("data2", 1))
 			assert.Panics(t, func() { c.MustInt("data2") })
+		})
+
+		t.Run("Int64", func(t *testing.T) {
+			t.Parallel()
+
+			assert.Equal(t, int64(0), c.Int64("data2"))
+			assert.Equal(t, int64(0), c.Int64Default("data2", 0))
+			assert.Equal(t, int64(1), c.Int64Default("data2", 1))
+			assert.Panics(t, func() { c.MustInt64("data2") })
 		})
 
 		t.Run("String", func(t *testing.T) {
@@ -193,6 +229,15 @@ func testReader(t *testing.T, c *configfile.Reader) {
 			assert.NotPanics(t, func() { c.MustInt("data3") })
 		})
 
+		t.Run("Int64", func(t *testing.T) {
+			t.Parallel()
+
+			assert.Equal(t, int64(9), c.Int64("data3"))
+			assert.Equal(t, int64(9), c.Int64Default("data3", 0))
+			assert.Equal(t, int64(9), c.Int64Default("data3", 1))
+			assert.NotPanics(t, func() { c.MustInt64("data3") })
+		})
+
 		t.Run("String", func(t *testing.T) {
 			t.Parallel()
 
@@ -232,6 +277,15 @@ func testReader(t *testing.T, c *configfile.Reader) {
 			assert.Equal(t, 0, c.IntDefault("data4", 0))
 			assert.Equal(t, 0, c.IntDefault("data4", 1))
 			assert.NotPanics(t, func() { c.MustInt("data4") })
+		})
+
+		t.Run("Int64", func(t *testing.T) {
+			t.Parallel()
+
+			assert.Equal(t, int64(0), c.Int64("data4"))
+			assert.Equal(t, int64(0), c.Int64Default("data4", 0))
+			assert.Equal(t, int64(0), c.Int64Default("data4", 1))
+			assert.NotPanics(t, func() { c.MustInt64("data4") })
 		})
 
 		t.Run("String", func(t *testing.T) {
