@@ -2,6 +2,7 @@ package configfile_test
 
 import (
 	"testing"
+	"time"
 
 	"github.com/acoshift/configfile"
 	"github.com/stretchr/testify/assert"
@@ -36,6 +37,15 @@ func testReader(t *testing.T, c *configfile.Reader) {
 			assert.Equal(t, int64(0), c.Int64Default("notfound", 0))
 			assert.Equal(t, int64(1), c.Int64Default("notfound", 1))
 			assert.Panics(t, func() { c.MustInt64("notfound") })
+		})
+
+		t.Run("Duration", func(t *testing.T) {
+			t.Parallel()
+
+			assert.Equal(t, time.Duration(0), c.Duration("notfound"))
+			assert.Equal(t, time.Duration(0), c.DurationDefault("notfound", 0))
+			assert.Equal(t, time.Duration(1), c.DurationDefault("notfound", 1))
+			assert.Panics(t, func() { c.MustDuration("notfound") })
 		})
 
 		t.Run("String", func(t *testing.T) {
@@ -88,6 +98,15 @@ func testReader(t *testing.T, c *configfile.Reader) {
 			assert.Panics(t, func() { c.MustInt64("empty") })
 		})
 
+		t.Run("Duration", func(t *testing.T) {
+			t.Parallel()
+
+			assert.Equal(t, time.Duration(0), c.Duration("empty"))
+			assert.Equal(t, time.Duration(0), c.DurationDefault("empty", 0))
+			assert.Equal(t, time.Duration(1), c.DurationDefault("empty", 1))
+			assert.Panics(t, func() { c.MustDuration("empty") })
+		})
+
 		t.Run("String", func(t *testing.T) {
 			t.Parallel()
 
@@ -136,6 +155,15 @@ func testReader(t *testing.T, c *configfile.Reader) {
 			assert.Equal(t, int64(0), c.Int64Default("data1", 0))
 			assert.Equal(t, int64(1), c.Int64Default("data1", 1))
 			assert.Panics(t, func() { c.MustInt64("data1") })
+		})
+
+		t.Run("Duration", func(t *testing.T) {
+			t.Parallel()
+
+			assert.Equal(t, time.Duration(0), c.Duration("data1"))
+			assert.Equal(t, time.Duration(0), c.DurationDefault("data1", 0))
+			assert.Equal(t, time.Duration(1), c.DurationDefault("data1", 1))
+			assert.Panics(t, func() { c.MustDuration("data1") })
 		})
 
 		t.Run("String", func(t *testing.T) {
@@ -188,6 +216,15 @@ func testReader(t *testing.T, c *configfile.Reader) {
 			assert.Panics(t, func() { c.MustInt64("data2") })
 		})
 
+		t.Run("Duration", func(t *testing.T) {
+			t.Parallel()
+
+			assert.Equal(t, time.Duration(0), c.Duration("data2"))
+			assert.Equal(t, time.Duration(0), c.DurationDefault("data2", 0))
+			assert.Equal(t, time.Duration(1), c.DurationDefault("data2", 1))
+			assert.Panics(t, func() { c.MustDuration("data2") })
+		})
+
 		t.Run("String", func(t *testing.T) {
 			t.Parallel()
 
@@ -236,6 +273,15 @@ func testReader(t *testing.T, c *configfile.Reader) {
 			assert.Equal(t, int64(9), c.Int64Default("data3", 0))
 			assert.Equal(t, int64(9), c.Int64Default("data3", 1))
 			assert.NotPanics(t, func() { c.MustInt64("data3") })
+		})
+
+		t.Run("Duration", func(t *testing.T) {
+			t.Parallel()
+
+			assert.Equal(t, time.Duration(0), c.Duration("data3"))
+			assert.Equal(t, time.Duration(0), c.DurationDefault("data3", 0))
+			assert.Equal(t, time.Duration(1), c.DurationDefault("data3", 1))
+			assert.Panics(t, func() { c.MustDuration("data3") })
 		})
 
 		t.Run("String", func(t *testing.T) {
@@ -288,6 +334,15 @@ func testReader(t *testing.T, c *configfile.Reader) {
 			assert.NotPanics(t, func() { c.MustInt64("data4") })
 		})
 
+		t.Run("Duration", func(t *testing.T) {
+			t.Parallel()
+
+			assert.Equal(t, time.Duration(0), c.Duration("data4"))
+			assert.Equal(t, time.Duration(0), c.DurationDefault("data4", 0))
+			assert.Equal(t, time.Duration(0), c.DurationDefault("data4", 1))
+			assert.NotPanics(t, func() { c.MustDuration("data4") })
+		})
+
 		t.Run("String", func(t *testing.T) {
 			t.Parallel()
 
@@ -305,6 +360,65 @@ func testReader(t *testing.T, c *configfile.Reader) {
 			assert.Equal(t, []byte("0"), c.BytesDefault("data4", []byte{}))
 			assert.Equal(t, []byte("0"), c.BytesDefault("data4", []byte("some bytes")))
 			assert.NotPanics(t, func() { c.MustBytes("data4") })
+		})
+	})
+
+	t.Run("Data5", func(t *testing.T) {
+		t.Parallel()
+
+		t.Run("Bool", func(t *testing.T) {
+			t.Parallel()
+
+			assert.True(t, c.Bool("data5"))
+			assert.True(t, c.BoolDefault("data5", false))
+			assert.True(t, c.BoolDefault("data5", true))
+			assert.NotPanics(t, func() { c.MustBool("data5") })
+		})
+
+		t.Run("Int", func(t *testing.T) {
+			t.Parallel()
+
+			assert.Equal(t, 0, c.Int("data5"))
+			assert.Equal(t, 0, c.IntDefault("data5", 0))
+			assert.Equal(t, 1, c.IntDefault("data5", 1))
+			assert.Panics(t, func() { c.MustInt("data5") })
+		})
+
+		t.Run("Int64", func(t *testing.T) {
+			t.Parallel()
+
+			assert.Equal(t, int64(0), c.Int64("data5"))
+			assert.Equal(t, int64(0), c.Int64Default("data5", 0))
+			assert.Equal(t, int64(1), c.Int64Default("data5", 1))
+			assert.Panics(t, func() { c.MustInt64("data5") })
+		})
+
+		t.Run("Duration", func(t *testing.T) {
+			t.Parallel()
+
+			assert.Equal(t, 3*time.Minute+5*time.Second, c.Duration("data5"))
+			assert.Equal(t, 3*time.Minute+5*time.Second, c.DurationDefault("data5", 0))
+			assert.Equal(t, 3*time.Minute+5*time.Second, c.DurationDefault("data5", 1))
+			assert.NotPanics(t, func() { c.MustDuration("data5") })
+		})
+
+		t.Run("String", func(t *testing.T) {
+			t.Parallel()
+
+			assert.Equal(t, "3m5s", c.String("data5"))
+			assert.Equal(t, "3m5s", c.StringDefault("data5", ""))
+			assert.Equal(t, "3m5s", c.StringDefault("data5", "a string"))
+			assert.NotPanics(t, func() { c.MustString("data5") })
+		})
+
+		t.Run("Bytes", func(t *testing.T) {
+			t.Parallel()
+
+			assert.Equal(t, []byte("3m5s"), c.Bytes("data5"))
+			assert.Equal(t, []byte("3m5s"), c.BytesDefault("data5", nil))
+			assert.Equal(t, []byte("3m5s"), c.BytesDefault("data5", []byte{}))
+			assert.Equal(t, []byte("3m5s"), c.BytesDefault("data5", []byte("some bytes")))
+			assert.NotPanics(t, func() { c.MustBytes("data5") })
 		})
 	})
 }
