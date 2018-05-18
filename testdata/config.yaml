@@ -2,4 +2,5 @@ data1: "true"
 data2: "false"
 data3: "9"
 data4: "0"
+data5: 3m5s
 empty:
