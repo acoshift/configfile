@@ -29,6 +29,11 @@ func NewYAMLReader(filename string) *Reader {
 	return &Reader{reader.NewYAML(filename)}
 }
 
+// NewEnvReader creates new env reader
+func NewEnvReader() *Reader {
+	return &Reader{reader.NewEnv()}
+}
+
 type intlReader interface {
 	Read(name string) ([]byte, error)
 }
