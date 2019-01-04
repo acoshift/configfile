@@ -436,3 +436,10 @@ func TestYAMLReader(t *testing.T) {
 	testReader(t, configfile.NewYAMLReader("testdata/config.yaml"))
 	testReader(t, configfile.NewReader("testdata/config.yaml"))
 }
+
+func TestEnvReader(t *testing.T) {
+	t.Parallel()
+
+	testReader(t, configfile.NewEnvReader())
+	testReader(t, configfile.NewReader("notexists"))
+}
