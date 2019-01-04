@@ -441,4 +441,5 @@ func TestEnvReader(t *testing.T) {
 	t.Parallel()
 
 	testReader(t, configfile.NewEnvReader())
+	testReader(t, configfile.NewReader("notexists"))
 }
