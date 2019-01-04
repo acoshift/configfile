@@ -5,6 +5,7 @@ go:
   - 1.11.x
 
 before_install:
+  - go get -t -v .
   - go get github.com/mattn/goveralls
 
 env:
