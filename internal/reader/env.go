@@ -16,8 +16,8 @@ type Env struct{}
 
 func (r *Env) Read(name string) ([]byte, error) {
 	name = strings.ToUpper(name)
-	p := os.Getenv(name)
-	if p == "" {
+	p, ok := os.LookupEnv(name)
+	if !ok {
 		return nil, errNotFound
 	}
 	return []byte(p), nil

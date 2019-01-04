@@ -13,10 +13,13 @@ import (
 // NewReader creates new config reader
 func NewReader(base string) *Reader {
 	stats, _ := os.Stat(base)
-	if stats != nil && !stats.IsDir() {
-		return &Reader{reader.NewYAML(base)}
+	if stats != nil {
+		if stats.IsDir() {
+			return NewDirReader(base)
+		}
+		return NewYAMLReader(base)
 	}
-	return &Reader{reader.NewDir(base)}
+	return NewEnvReader()
 }
 
 // NewDirReader creates new config dir reader
