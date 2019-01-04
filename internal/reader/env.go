@@ -1,6 +1,9 @@
 package reader
 
-import "os"
+import (
+	"os"
+	"strings"
+)
 
 // NewEnv creates new env reader
 func NewEnv() *Env {
@@ -12,6 +15,7 @@ func NewEnv() *Env {
 type Env struct{}
 
 func (r *Env) Read(name string) ([]byte, error) {
+	name = strings.ToUpper(name)
 	p := os.Getenv(name)
 	if p == "" {
 		return nil, errNotFound
