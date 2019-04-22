@@ -67,6 +67,16 @@ func testReader(t *testing.T, c *configfile.Reader) {
 			assert.Equal(t, []byte("some bytes"), c.BytesDefault("notfound", []byte("some bytes")))
 			assert.Panics(t, func() { c.MustBytes("notfound") })
 		})
+
+		t.Run("Base64", func(t *testing.T) {
+			t.Parallel()
+
+			assert.Equal(t, []byte(""), c.Base64("notfound"))
+			assert.Empty(t, c.Base64Default("notfound", nil))
+			assert.Equal(t, []byte(""), c.Base64Default("notfound", []byte{}))
+			assert.Equal(t, []byte("some bytes"), c.Base64Default("notfound", []byte("some bytes")))
+			assert.Panics(t, func() { c.MustBase64("notfound") })
+		})
 	})
 
 	t.Run("Empty", func(t *testing.T) {
@@ -125,6 +135,16 @@ func testReader(t *testing.T, c *configfile.Reader) {
 			assert.Equal(t, []byte{}, c.BytesDefault("empty", []byte{}))
 			assert.Equal(t, []byte{}, c.BytesDefault("empty", []byte("some bytes")))
 			assert.NotPanics(t, func() { c.MustBytes("empty") })
+		})
+
+		t.Run("Base64", func(t *testing.T) {
+			t.Parallel()
+
+			assert.Equal(t, []byte(""), c.Base64("notfound"))
+			assert.Empty(t, nil, c.Base64Default("notfound", nil))
+			assert.Equal(t, []byte(""), c.Base64Default("notfound", []byte{}))
+			assert.Equal(t, []byte("some bytes"), c.Base64Default("notfound", []byte("some bytes")))
+			assert.Panics(t, func() { c.MustBase64("notfound") })
 		})
 	})
 

@@ -157,9 +157,8 @@ func (r *Reader) Base64Default(name string, def []byte) []byte {
 }
 
 // Base64 reads string from config file then decode using base64
-// if error, will return nil
 func (r *Reader) Base64(name string) []byte {
-	return r.Base64Default(name, nil)
+	return r.Base64Default(name, []byte{})
 }
 
 // MustBase64 reads string from config file then decode using base64
