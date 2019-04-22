@@ -1,6 +1,7 @@
 package configfile
 
 import (
+	"encoding/base64"
 	"io"
 	"os"
 	"strconv"
@@ -139,6 +140,40 @@ func (r *Reader) MustString(name string) string {
 		panic(err)
 	}
 	return s
+}
+
+// Base64Default reads string from config file then decode using base64
+// if error, will return default value
+func (r *Reader) Base64Default(name string, def []byte) []byte {
+	s, err := r.readString(name)
+	if err != nil {
+		return def
+	}
+	b, err := base64.StdEncoding.DecodeString(s)
+	if err != nil {
+		return def
+	}
+	return b
+}
+
+// Base64 reads string from config file then decode using base64
+// if error, will return nil
+func (r *Reader) Base64(name string) []byte {
+	return r.Base64Default(name, nil)
+}
+
+// MustBase64 reads string from config file then decode using base64
+// if error, will panic
+func (r *Reader) MustBase64(name string) []byte {
+	s, err := r.readString(name)
+	if err != nil {
+		panic(err)
+	}
+	b, err := base64.StdEncoding.DecodeString(s)
+	if err != nil {
+		panic(err)
+	}
+	return b
 }
 
 // IntDefault reads int from config file with default value

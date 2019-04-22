@@ -4,8 +4,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/acoshift/configfile"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/acoshift/configfile"
 )
 
 func testReader(t *testing.T, c *configfile.Reader) {
@@ -420,6 +421,16 @@ func testReader(t *testing.T, c *configfile.Reader) {
 			assert.Equal(t, []byte("3m5s"), c.BytesDefault("data5", []byte("some bytes")))
 			assert.NotPanics(t, func() { c.MustBytes("data5") })
 		})
+	})
+
+	t.Run("Data6", func(t *testing.T) {
+		t.Parallel()
+
+		assert.Equal(t, []byte("hello"), c.Base64("data6"))
+		assert.Equal(t, []byte("hello"), c.Base64Default("data6", nil))
+		assert.Equal(t, []byte("hello"), c.Base64Default("data6", []byte{}))
+		assert.Equal(t, []byte("hello"), c.Base64Default("data6", []byte("some bytes")))
+		assert.NotPanics(t, func() { c.MustBase64("data6") })
 	})
 }
 
