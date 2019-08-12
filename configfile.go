@@ -25,17 +25,17 @@ func NewReader(base string) *Reader {
 
 // NewDirReader creates new config dir reader
 func NewDirReader(base string) *Reader {
-	return &Reader{reader.NewDir(base)}
+	return &Reader{r: reader.NewDir(base)}
 }
 
 // NewYAMLReader creates new yaml reader
 func NewYAMLReader(filename string) *Reader {
-	return &Reader{reader.NewYAML(filename)}
+	return &Reader{r: reader.NewYAML(filename)}
 }
 
 // NewEnvReader creates new env reader
 func NewEnvReader() *Reader {
-	return &Reader{reader.NewEnv()}
+	return &Reader{r: reader.NewEnv()}
 }
 
 type intlReader interface {
@@ -44,11 +44,25 @@ type intlReader interface {
 
 // Reader is the config reader
 type Reader struct {
-	r intlReader
+	r        intlReader
+	fallback *Reader
+}
+
+func (r *Reader) Fallback(f *Reader) *Reader {
+	r.fallback = f
+	return r
+}
+
+func (r *Reader) read(name string) ([]byte, error) {
+	b, err := r.r.Read(name)
+	if err != nil && r.fallback != nil {
+		b, err = r.fallback.read(name)
+	}
+	return b, err
 }
 
 func (r *Reader) readString(name string) (string, error) {
-	b, err := r.r.Read(name)
+	b, err := r.read(name)
 	if err != nil {
 		return "", err
 	}
@@ -98,7 +112,7 @@ func (r *Reader) readDuration(name string) (time.Duration, error) {
 
 // BytesDefault reads bytes from config file with default value
 func (r *Reader) BytesDefault(name string, def []byte) []byte {
-	b, err := r.r.Read(name)
+	b, err := r.read(name)
 	if err != nil {
 		return def
 	}
@@ -112,7 +126,7 @@ func (r *Reader) Bytes(name string) []byte {
 
 // MustBytes reads bytes from config file, panic if file not exists
 func (r *Reader) MustBytes(name string) []byte {
-	s, err := r.r.Read(name)
+	s, err := r.read(name)
 	if err != nil {
 		panic(err)
 	}
