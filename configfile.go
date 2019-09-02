@@ -16,9 +16,9 @@ func NewReader(base string) *Reader {
 	stats, _ := os.Stat(base)
 	if stats != nil {
 		if stats.IsDir() {
-			return NewDirReader(base)
+			return NewDirReader(base).Fallback(NewEnvReader())
 		}
-		return NewYAMLReader(base)
+		return NewYAMLReader(base).Fallback(NewEnvReader())
 	}
 	return NewEnvReader()
 }

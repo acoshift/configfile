@@ -479,4 +479,6 @@ func TestFallback(t *testing.T) {
 	t.Parallel()
 
 	testReader(t, configfile.NewDirReader("notexists").Fallback(configfile.NewEnvReader()))
+
+	assert.Equal(t, 1, configfile.NewReader("testdata/config.yaml").Int("ONLYENV"))
 }

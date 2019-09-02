@@ -7,4 +7,5 @@ test:
 		DATA5=3m5s \
 		DATA6="aGVsbG8=" \
 		EMPTY="" \
+		ONLYENV=1 \
 		go test ./...
