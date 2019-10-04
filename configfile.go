@@ -8,8 +8,14 @@ import (
 	"strings"
 	"time"
 
+	"github.com/joho/godotenv"
+
 	"github.com/acoshift/configfile/internal/reader"
 )
+
+func LoadDotEnv(filename ...string) error {
+	return godotenv.Load(filename...)
+}
 
 // NewReader creates new config reader
 func NewReader(base string) *Reader {
