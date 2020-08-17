@@ -34,9 +34,15 @@ func NewDirReader(base string) *Reader {
 	return &Reader{r: reader.NewDir(base)}
 }
 
-// NewYAMLReader creates new yaml reader
+// NewYAMLReader creates new yaml reader from file
 func NewYAMLReader(filename string) *Reader {
-	return &Reader{r: reader.NewYAML(filename)}
+	fs, _ := os.Open(filename)
+	return NewYAMLReaderFromReader(fs)
+}
+
+// NewYAMLReaderFromReader creates new yaml reader from io.Reader
+func NewYAMLReaderFromReader(r io.Reader) *Reader {
+	return &Reader{r: reader.NewYAML(r)}
 }
 
 // NewEnvReader creates new env reader

@@ -1,19 +1,18 @@
 package reader
 
 import (
-	"os"
+	"io"
 
-	yaml "gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v2"
 )
 
 // NewYAML creates new yaml reader
-func NewYAML(filename string) *YAML {
-	var r YAML
-	fs, _ := os.Open(filename)
-	if fs != nil {
-		yaml.NewDecoder(fs).Decode(&r.d)
+func NewYAML(r io.Reader) *YAML {
+	var rd YAML
+	if r != nil {
+		yaml.NewDecoder(r).Decode(&rd.d)
 	}
-	return &r
+	return &rd
 }
 
 // YAML reads config from yaml file
