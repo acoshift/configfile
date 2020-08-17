@@ -4,7 +4,6 @@
 [![Coverage Status](https://coveralls.io/repos/github/acoshift/configfile/badge.svg?branch=master)](https://coveralls.io/github/acoshift/configfile?branch=master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/acoshift/configfile)](https://goreportcard.com/report/github.com/acoshift/configfile)
 [![GoDoc](https://godoc.org/github.com/acoshift/configfile?status.svg)](https://godoc.org/github.com/acoshift/configfile)
-[![Sourcegraph](https://sourcegraph.com/github.com/acoshift/configfile/-/badge.svg)](https://sourcegraph.com/github.com/acoshift/configfile?badge)
 
 Read config from file, useful when read data from kubernetes configmaps, and secret.
 
