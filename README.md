@@ -62,7 +62,7 @@ func main() {
 package main
 
 import (
-    "fmt"
+    "log"
     "net/http"
 
     "github.com/acoshift/configfile"
