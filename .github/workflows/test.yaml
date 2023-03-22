@@ -15,6 +15,7 @@ jobs:
       with:
         go-version: ${{ matrix.go }}
     - run: go get -t -v ./...
+    - run: go test -coverprofile=coverage.txt -covermode=atomic ./...
       env:
         DATA1: "true"
         DATA2: "false"
@@ -24,5 +25,4 @@ jobs:
         EMPTY: ""
         DATA6: "aGVsbG8="
         ONLYENV: "1"
-    - run: go test -coverprofile=coverage.txt -covermode=atomic ./...
     - uses: codecov/codecov-action@v3
