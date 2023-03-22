@@ -1,7 +1,7 @@
 # configfile
 
 ![Build Status](https://github.com/acoshift/configfile/actions/workflows/test.yaml/badge.svg?branch=master)
-[![codecov](https://codecov.io/gh/acoshift/configfile/branch/master/graph/badge.svg)](https://codecov.io/gh/acoshift/arpc)
+[![codecov](https://codecov.io/gh/acoshift/configfile/branch/master/graph/badge.svg)](https://codecov.io/gh/acoshift/configfile)
 [![Go Report Card](https://goreportcard.com/badge/github.com/acoshift/configfile)](https://goreportcard.com/report/github.com/acoshift/configfile)
 [![GoDoc](https://godoc.org/github.com/acoshift/configfile?status.svg)](https://godoc.org/github.com/acoshift/configfile)
 
