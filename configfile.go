@@ -97,6 +97,26 @@ func (r *Reader) readInt64(name string) (int64, error) {
 	return strconv.ParseInt(s, 10, 64)
 }
 
+func (r *Reader) readFloat32(name string) (float32, error) {
+	s, err := r.readString(name)
+	if err != nil {
+		return 0, err
+	}
+	f, err := strconv.ParseFloat(s, 32)
+	if err != nil {
+		return 0, err
+	}
+	return float32(f), nil
+}
+
+func (r *Reader) readFloat64(name string) (float64, error) {
+	s, err := r.readString(name)
+	if err != nil {
+		return 0, err
+	}
+	return strconv.ParseFloat(s, 64)
+}
+
 func (r *Reader) readBool(name string) (bool, error) {
 	s, err := r.readString(name)
 	if err != nil {
@@ -245,6 +265,52 @@ func (r *Reader) MustInt64(name string) int64 {
 		panic(err)
 	}
 	return i
+}
+
+// Float32Default reads float32 from config file with default value
+func (r *Reader) Float32Default(name string, def float32) float32 {
+	f, err := r.readFloat32(name)
+	if err != nil {
+		return def
+	}
+	return f
+}
+
+// Float32 reads float32 from config file
+func (r *Reader) Float32(name string) float32 {
+	return r.Float32Default(name, 0)
+}
+
+// MustFloat32 reads float32 from config file, panic if file not exists or data can not parse to float32
+func (r *Reader) MustFloat32(name string) float32 {
+	f, err := r.readFloat32(name)
+	if err != nil {
+		panic(err)
+	}
+	return f
+}
+
+// Float64Default reads float64 from config file with default value
+func (r *Reader) Float64Default(name string, def float64) float64 {
+	f, err := r.readFloat64(name)
+	if err != nil {
+		return def
+	}
+	return f
+}
+
+// Float64 reads float64 from config file
+func (r *Reader) Float64(name string) float64 {
+	return r.Float64Default(name, 0)
+}
+
+// MustFloat64 reads float64 from config file, panic if file not exists or data can not parse to float64
+func (r *Reader) MustFloat64(name string) float64 {
+	f, err := r.readFloat64(name)
+	if err != nil {
+		panic(err)
+	}
+	return f
 }
 
 // BoolDefault reads bool from config file with default value,
