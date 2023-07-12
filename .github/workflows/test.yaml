@@ -24,5 +24,6 @@ jobs:
         DATA5: "3m5s"
         EMPTY: ""
         DATA6: "aGVsbG8="
+        DATA7: "1.25"
         ONLYENV: "1"
     - uses: codecov/codecov-action@v3
